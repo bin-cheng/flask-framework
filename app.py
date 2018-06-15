@@ -12,28 +12,28 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
-@app.route('/graph')
-def generate_plot(ticker_name, value_choices, df):
-    df['date'] = pd.to_datetime(df['date'])
-    p = figure(plot_width=800, plot_height=600, x_axis_type="datetime")
-    p.xaxis.axis_label = 'date'
-    for choice, color in zip(value_choices, Spectral4):
-        p.line(df['date'], df[choice], color=color, alpha=0.8,
-               line_width=2.5, legend=ticker_name+": "+choice)
-    show(p)
-    script, div = components(p)
-    return render_template('graph.html', script=script, div=div)
-
-@app.route('/index', methods=['POST'])
-def get_data_from_quandl():
-    ticker_name = request.form["ticker"]
-    value_choices = request.form.getlist("features")
-    quandl.ApiConfig.api_key = 'rSYiMRCK6UBqXxsLTqL-'
-    df = quandl.get_table('WIKI/PRICES',
-                          qopts={'columns': ['ticker', 'date', 'close', 'adj_close', 'open', 'adj_open']},
-                          ticker=[ticker_name],
-                          date={'gte': '2017-01-01', 'lte': '2017-12-31'})
-    return generate_plot(ticker_name, value_choices, df)
+# @app.route('/graph')
+# def generate_plot(ticker_name, value_choices, df):
+#     df['date'] = pd.to_datetime(df['date'])
+#     p = figure(plot_width=800, plot_height=600, x_axis_type="datetime")
+#     p.xaxis.axis_label = 'date'
+#     for choice, color in zip(value_choices, Spectral4):
+#         p.line(df['date'], df[choice], color=color, alpha=0.8,
+#                line_width=2.5, legend=ticker_name+": "+choice)
+#     show(p)
+#     script, div = components(p)
+#     return render_template('graph.html', script=script, div=div)
+#
+# @app.route('/index', methods=['POST'])
+# def get_data_from_quandl():
+#     ticker_name = request.form["ticker"]
+#     value_choices = request.form.getlist("features")
+#     quandl.ApiConfig.api_key = 'rSYiMRCK6UBqXxsLTqL-'
+#     df = quandl.get_table('WIKI/PRICES',
+#                           qopts={'columns': ['ticker', 'date', 'close', 'adj_close', 'open', 'adj_open']},
+#                           ticker=[ticker_name],
+#                           date={'gte': '2017-01-01', 'lte': '2017-12-31'})
+#     return generate_plot(ticker_name, value_choices, df)
 
 
 
