@@ -4,5 +4,6 @@ dill
 flask
 jinja2
 pip
+pip3
 simplejson
 quandl
