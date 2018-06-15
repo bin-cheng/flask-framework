@@ -24,6 +24,7 @@ def generate_plot(ticker_name, value_choices, df):
     for choice, color in zip(value_choices, Spectral4):
         p.line(df['date'], df[choice], color=color, alpha=0.8,
                line_width=2.5, legend=ticker_name+": "+choice)
+    show(p)
     script, div = components(p)
     return render_template('graph.html', script=script, div=div, ticker_name=ticker_name)
 
