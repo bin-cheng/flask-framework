@@ -12,6 +12,10 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
+@app.route('/index')
+def home():
+    return render_template('index.html')
+
 @app.route('/graph')
 def generate_plot(ticker_name, value_choices, df):
     df['date'] = pd.to_datetime(df['date'])
@@ -21,12 +25,14 @@ def generate_plot(ticker_name, value_choices, df):
         p.line(df['date'], df[choice], color=color, alpha=0.8,
                line_width=2.5, legend=ticker_name+": "+choice)
     script, div = components(p)
-    return render_template('graph.html', script=script, div=div)
+    return render_template('graph.html', script=script, div=div, ticker_name=ticker_name)
 
 @app.route('/index', methods=['POST'])
 def get_data_from_quandl():
     ticker_name = request.form["ticker"]
     value_choices = request.form.getlist("features")
+    if ticker_name is None or value_choices is None:
+        return
     quandl.ApiConfig.api_key = 'rSYiMRCK6UBqXxsLTqL-'
     df = quandl.get_table('WIKI/PRICES',
                           qopts={'columns': ['ticker', 'date', 'close', 'adj_close', 'open', 'adj_open']},
