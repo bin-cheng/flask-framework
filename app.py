@@ -9,15 +9,14 @@ import os
 app = Flask(__name__)
 
 
-@app.route('/')
-def index():
-    return render_template('index.html')
-
-@app.route('/index')
+@app.route('/', methods=['GET', 'POST'])
 def home():
     return render_template('index.html')
 
-@app.route('/graph')
+@app.route('/index', methods=['GET'])
+def index():
+    return render_template('index.html')
+
 def generate_plot(ticker_name, value_choices, df):
     df['date'] = pd.to_datetime(df['date'])
     p = figure(plot_width=800, plot_height=600, x_axis_type="datetime")
