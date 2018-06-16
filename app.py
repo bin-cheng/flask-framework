@@ -4,6 +4,7 @@ from bokeh.plotting import figure, show, output_file
 import pandas as pd
 from bokeh.palettes import Spectral4
 from bokeh.embed import components
+import os
 
 app = Flask(__name__)
 
@@ -33,7 +34,7 @@ def get_data_from_quandl():
     value_choices = request.form.getlist("features")
     if ticker_name is None or value_choices is None:
         return
-    quandl.ApiConfig.api_key = 'rSYiMRCK6UBqXxsLTqL-'
+    quandl.ApiConfig.api_key = os.environ['QUANDL_KEY']
     df = quandl.get_table('WIKI/PRICES',
                           qopts={'columns': ['ticker', 'date', 'close', 'adj_close', 'open', 'adj_open']},
                           ticker=[ticker_name],
